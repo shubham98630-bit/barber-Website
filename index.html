@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elite Cuts Barber Shop</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Poppins,sans-serif;background:#f4f4f4}
+.hidden{display:none!important}
+
+/* HEADER */
+header{
+background:#111;color:#fff;
+position:fixed;top:0;width:100%;z-index:1000
+}
+.header{
+height:70px;display:flex;
+align-items:center;justify-content:space-between;
+padding:0 20px
+}
+header h1{color:#f5c542}
+
+/* HERO */
+#hero{
+height:100vh;margin-top:70px;
+background:
+linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+url("https://as2.ftcdn.net/v2/jpg/08/52/39/93/1000_F_852399316_IagLQnnpNlPlypLFt31Wr37b7CAzP9pZ.jpg")
+center/cover no-repeat;
+display:flex;align-items:center;color:#fff;padding:20px
+}
+#hero h2{font-size:3rem}
+
+/* BOOKING */
+#booking{padding:80px 20px;background:#fff}
+form{
+max-width:600px;margin:auto;
+display:grid;gap:15px
+}
+input,select,button{
+padding:12px;border-radius:8px;
+border:1px solid #ccc;font-size:1rem
+}
+button{
+background:#111;color:#fff;
+border:none;cursor:pointer
+}
+button:hover{background:#f5c542;color:#000}
+
+/* STATUS MESSAGE */
+#statusBox{
+max-width:600px;
+margin:30px auto;
+padding:20px;
+text-align:center;
+border-radius:10px;
+background:#fff3cd;
+color:#856404;
+font-weight:600
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header">
+    <h1>Elite Cuts</h1>
+  </div>
+</header>
+
+<section id="hero">
+  <div>
+    <h2>Style That Defines You</h2>
+    <p>Open 9:00 AM – 9:00 PM</p>
+    <button onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">
+      Book Appointment
+    </button>
+  </div>
+</section>
+
+<section id="booking">
+<h2 style="text-align:center;margin-bottom:30px">Book Appointment</h2>
+
+<form onsubmit="bookAppointment(event)">
+
+<input id="name" placeholder="Full Name" required>
+
+<input id="phone" type="tel"
+placeholder="Phone (10 digits)"
+maxlength="10"
+pattern="[0-9]{10}"
+required>
+
+<select id="service" required>
+<option value="">Select Service</option>
+<option>Hair Cutting</option>
+<option>Hair Coloring</option>
+<option>Beard Service</option>
+<option>Facial</option>
+</select>
+
+<select id="barber">
+<option value="">Any Barber (Optional)</option>
+<option>Bijoy</option>
+<option>Soyeb</option>
+<option>Shubham</option>
+</select>
+
+<input id="date" type="date" required>
+<input id="time" type="time">
+
+<button type="submit">Confirm Booking</button>
+</form>
+
+<div id="statusBox" class="hidden">
+⏳ Booking request sent successfully.<br>
+Your request is <b>pending approval</b>.<br>
+Barber will confirm your time shortly.
+</div>
+
+</section>
+
+<script>
+const BARBERS={
+Bijoy:"916289890040",
+Soyeb:"918910261363",
+Shubham:"918100510339",
+Any:"918100510339" // default barber
+};
+
+function bookAppointment(e){
+e.preventDefault();
+
+const name=document.getElementById("name").value;
+const phone=document.getElementById("phone").value;
+const service=document.getElementById("service").value;
+const barber=document.getElementById("barber").value||"Any";
+const date=document.getElementById("date").value;
+const time=document.getElementById("time").value||"Not selected";
+
+const barberNumber=BARBERS[barber];
+
+const message=`New Booking Request 💈
+Name: ${name}
+Phone: ${phone}
+Service: ${service}
+Date: ${date}
+Preferred Time: ${time}
+
+Please reply:
+APPROVED - time
+or
+REJECTED`;
+
+const url=`https://wa.me/${barberNumber}?text=${encodeURIComponent(message)}`;
+
+// send WhatsApp message
+window.open(url,"_blank");
+
+// show pending status
+document.getElementById("statusBox").classList.remove("hidden");
+
+// reset form
+e.target.reset();
+}
+</script>
+
+</body>
+</html>
